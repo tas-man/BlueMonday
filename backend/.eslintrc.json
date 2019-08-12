@@ -1,0 +1,25 @@
+{
+    "extends": [
+      "airbnb"
+    ],
+
+    "rules": {
+      "no-console": "off",
+      "prefer-template": "off",
+      "prefer-destructuring": [ "off", {
+        "array": true,
+        "object": true
+        }
+      ],
+      "no-undef": "off",
+      "no-unused-vars": "warn",
+      "no-param-reassign": "off",
+      "max-len": "off",
+      "eqeqeq": "off",
+      "no-plusplus": "off",
+      "no-restricted-syntax": "off",
+      "no-underscore-dangle": "off",
+      "arrow-body-style": ["off", "always"]
+    }
+
+}

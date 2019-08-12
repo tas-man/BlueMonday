@@ -1,0 +1,9 @@
+# Dependencies
+/backend/Dockerfile
+/backend/.dockerignore
+/backend/docker-compose.yml
+
+/frontend/Dockerfile
+/frontend/.dockerignore
+
+.DS_Store

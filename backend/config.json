@@ -1,0 +1,6 @@
+{
+  "API_SERVER_LISTEN_PORT": "4000",
+  "JWT_SECRET": "THIS IS A CLOSELY GUARDED SECRET, MAKE UP YOUR OWN",
+  "MONGODB_URI": "mongodb://localhost:27017/my-planner-app-db",
+  "DEPLOYMENT_ENV": "DEV"
+}
