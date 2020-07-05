@@ -5,7 +5,12 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { FormHeader } from '../general/Header';
 import {
-  Form, FieldWrapper, SubmitButton, CancelButton, ButtonWrapper, renderField,
+  Form,
+  FieldWrapper,
+  SubmitButton,
+  CancelButton,
+  ButtonWrapper,
+  renderField,
 } from './Form';
 import updateJobAction from '../../redux/actionCreators/jobs/updateJob';
 import { createTaskModalIsVisible } from '../../redux/reducers/ui';
@@ -27,9 +32,11 @@ let TaskForm = (props) => {
 
   const submitForm = (formValues) => {
     const updatedJob = data;
-    const newTask = {...formValues, completed: false}
-    updatedJob.tasks.push(newTask);
-    updateJob(data.id, updatedJob, token);
+    const newTask = { ...formValues, completed: false };
+    if (updatedJob && updatedJob.bindActionCreatorstasks) {
+      updatedJob.bindActionCreatorstasks.push(newTask);
+      updateJob(data.id, updatedJob, token);
+    }
     if (modalIsVisible) toggleModal();
   };
 
@@ -38,16 +45,18 @@ let TaskForm = (props) => {
       <FormHeader>Create a task</FormHeader>
       <FieldWrapper>
         <Field
-          name="description"
-          label="Task Description"
+          name='description'
+          label='Task Description'
           component={renderField}
-          type="text"
+          type='text'
           validate={required}
         />
       </FieldWrapper>
       <ButtonWrapper>
         <CancelButton onClick={() => toggleModal()}>Cancel</CancelButton>
-        <SubmitButton type="submit" disabled={pristine || submitting}>Create</SubmitButton>
+        <SubmitButton type='submit' disabled={pristine || submitting}>
+          Create
+        </SubmitButton>
       </ButtonWrapper>
     </Form>
   );
@@ -64,15 +73,19 @@ TaskForm.propTypes = {
   data: PropTypes.shape({}).isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   token: getToken(state),
   modalIsVisible: createTaskModalIsVisible(state),
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-  updateJob: (id, job, token) => updateJobAction(id, job, token),
-  toggleModal: () => toggleCreateTaskModal(),
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      updateJob: (id, job, token) => updateJobAction(id, job, token),
+      toggleModal: () => toggleCreateTaskModal(),
+    },
+    dispatch
+  );
 
 TaskForm = connect(mapStateToProps, mapDispatchToProps)(TaskForm);
 

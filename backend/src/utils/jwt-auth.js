@@ -16,7 +16,11 @@ const isRevokedCallback = async (req, payload, done) => {
 };
 
 const jwtAuth = () => {
-  return expressJwt({ secret: conf.JWT_SECRET, isRevoked: isRevokedCallback }).unless({
+  return expressJwt({
+    secret: conf.JWT_SECRET,
+    algorithms: ['HS256'],
+    isRevoked: isRevokedCallback,
+  }).unless({
     path: [
       // public routes, no authentication required
       '/api/users/register',

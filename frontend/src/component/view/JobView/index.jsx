@@ -1,23 +1,29 @@
-import React, { useEffect } from "react";
-import styled from "styled-components";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import PropTypes from "prop-types";
-import { Header } from "../../general/Header";
-import PlusCircleIcon from "mdi-react/PlusCircleIcon";
-import CircleEditOutline from "mdi-react/CircleEditOutlineIcon";
-import { ViewWrapper, ContentWrapper } from "../../general/ViewWrapper";
-import readJobAction from "../../../redux/actionCreators/jobs/readJob";
-import getSessionAction from "../../../redux/actionCreators/auth/getSession";
-import { getToken } from "../../../redux/reducers/auth";
-import { BackButton } from "../../general/BackButton";
-import Task from "../../general/Task";
-import Modal from "../../general/Modal";
-import { WidePrimaryButton } from "../../general/Button";
-import { toggleEditJobModal, toggleCreateTaskModal } from "../../../redux/actions/ui";
-import { editJobModalIsVisible, createTaskModalIsVisible } from "../../../redux/reducers/ui";
-import JobForm from "../../forms/JobForm";
-import TaskForm from "../../forms/TaskForm";
+import React, { useEffect } from 'react';
+import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import PropTypes from 'prop-types';
+import { Header } from '../../general/Header';
+import PlusCircleIcon from 'mdi-react/PlusCircleIcon';
+import CircleEditOutline from 'mdi-react/CircleEditOutlineIcon';
+import { ViewWrapper, ContentWrapper } from '../../general/ViewWrapper';
+import readJobAction from '../../../redux/actionCreators/jobs/readJob';
+import getSessionAction from '../../../redux/actionCreators/auth/getSession';
+import { getToken } from '../../../redux/reducers/auth';
+import { BackButton } from '../../general/BackButton';
+import Task from '../../general/Task';
+import Modal from '../../general/Modal';
+import { WidePrimaryButton } from '../../general/Button';
+import {
+  toggleEditJobModal,
+  toggleCreateTaskModal,
+} from '../../../redux/actions/ui';
+import {
+  editJobModalIsVisible,
+  createTaskModalIsVisible,
+} from '../../../redux/reducers/ui';
+import JobForm from '../../forms/JobForm';
+import TaskForm from '../../forms/TaskForm';
 import Prompt from '../../general/Prompt';
 
 const HeaderWrapper = styled.div`
@@ -25,7 +31,7 @@ const HeaderWrapper = styled.div`
   justify-content: space-between;
 `;
 
-const JobView = props => {
+const JobView = (props) => {
   const {
     match,
     token,
@@ -34,7 +40,7 @@ const JobView = props => {
     jobModalIsVisible,
     taskModalIsVisible,
     toggleJobModal,
-    toggleTaskModal
+    toggleTaskModal,
   } = props;
 
   useEffect(() => {
@@ -49,10 +55,10 @@ const JobView = props => {
       <BackButton />
       <HeaderWrapper>
         <Header>{job && job.jobTitle}</Header>
-        <CircleEditOutline onClick={() => toggleJobModal()}/>
+        <CircleEditOutline onClick={() => toggleJobModal()} />
       </HeaderWrapper>
       <ContentWrapper>
-        {job.tasks[0] ? (
+        {job && job.tasks[0] ? (
           job.tasks.map((task, index) => (
             <Task key={index} index={index} job={job} data={task} />
           ))
@@ -67,10 +73,10 @@ const JobView = props => {
         </WidePrimaryButton>
       </ContentWrapper>
       {jobModalIsVisible && (
-        <Modal form={<JobForm data={job} />} type="editJob" />
+        <Modal form={<JobForm data={job} />} type='editJob' />
       )}
       {taskModalIsVisible && (
-        <Modal form={<TaskForm data={job} />} type="task" />
+        <Modal form={<TaskForm data={job} />} type='task' />
       )}
     </ViewWrapper>
   );
@@ -83,28 +89,25 @@ JobView.propTypes = {
   toggleJobModal: PropTypes.func.isRequired,
   toggleTaskModal: PropTypes.func.isRequired,
   jobModalIsVisible: PropTypes.bool.isRequired,
-  taskModalIsVisible: PropTypes.bool.isRequired
+  taskModalIsVisible: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   token: getToken(state),
   job: state.jobs.currentJob,
   jobModalIsVisible: editJobModalIsVisible(state),
-  taskModalIsVisible: createTaskModalIsVisible(state)
+  taskModalIsVisible: createTaskModalIsVisible(state),
 });
 
-const mapDispatchToProps = dispatch =>
+const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      getSession: token => getSessionAction(token),
+      getSession: (token) => getSessionAction(token),
       readJob: (id, token) => readJobAction(id, token),
       toggleJobModal: () => toggleEditJobModal(),
-      toggleTaskModal: () => toggleCreateTaskModal()
+      toggleTaskModal: () => toggleCreateTaskModal(),
     },
     dispatch
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(JobView);
+export default connect(mapStateToProps, mapDispatchToProps)(JobView);
